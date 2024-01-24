@@ -140,3 +140,17 @@ def installs_by_monthly():
     order by install_date, Platform
     '''
     return q
+
+
+# 7. Теперь посмотрим сколько пользователей совершило конверсию из установок в просмотры
+def conv_by_platform():
+    q = '''
+    select 
+    installs.Platform as platform
+    ,count(distinct events.DeviceID) / count(distinct installs.DeviceID) as conv
+    from installs 
+    left join events
+        using(DeviceID)
+    group by platform
+    '''
+    return q
