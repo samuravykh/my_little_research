@@ -139,4 +139,4 @@ def installs_by_monthly():
     group by install_date, Platform
     order by install_date, Platform
     '''
-return q
+    return q
