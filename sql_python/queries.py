@@ -107,6 +107,39 @@ def repeat_bought_by_source():
     '''
     return q
 
+# 3.1. Рассчитаем какие источники привели больше всего по платформам
+def top_sources_count():
+    q1 = '''
+    select 
+        ios.Source as Source
+        ,ios.cnt as ios_installs
+        ,android.cnt as android_installs
+    from (
+        select 
+        Source
+        ,Platform
+        ,count(distinct DeviceID) as cnt
+        from default.installs
+        where Platform = 'iOS'
+        group by Source, Platform
+        order by cnt desc
+        ) ios
+    inner join 
+            (
+            select
+            Source
+            ,Platform
+            ,count(distinct DeviceID) as cnt
+            from default.installs
+            where Platform = 'android'
+            group by Source, Platform
+            order by cnt desc
+            ) android
+        on ios.Source = android.Source
+    limit 10
+    '''
+    return q
+
 
 # 5. суммы покупок по месяцам в разбивке по ios и android
 def purchases_by_monthly():
